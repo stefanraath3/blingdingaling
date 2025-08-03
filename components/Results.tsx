@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Sparkles } from "lucide-react";
+import { Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Idea {
   title: string;
@@ -38,15 +38,17 @@ export default function Results({
       <div className="flex w-full max-w-[1060px] justify-between mb-4">
         <button
           onClick={prev}
-          className="flex w-[178px] h-[54px] px-[9px] py-[10px] justify-center items-center gap-[2px] rounded-[6px] bg-[#00D37E] text-[#006E42] font-semibold text-[22px] leading-[30px] hover:bg-[#00c87a]"
+          className="flex h-[54px] px-[18px] py-[10px] justify-center items-center gap-[8px] rounded-[6px] bg-[#00D37E] text-[#006E42] font-semibold text-[22px] leading-[30px] hover:bg-[#00c87a]"
         >
-          ‹ PREV IDEA
+          <ChevronLeft size={24} />
+          PREV IDEA
         </button>
         <button
           onClick={next}
-          className="flex w-[178px] h-[54px] px-[9px] py-[10px] justify-center items-center gap-[2px] rounded-[6px] bg-[#00D37E] text-[#006E42] font-semibold text-[22px] leading-[30px] hover:bg-[#00c87a]"
+          className="flex h-[54px] px-[18px] py-[10px] justify-center items-center gap-[8px] rounded-[6px] bg-[#00D37E] text-[#006E42] font-semibold text-[22px] leading-[30px] hover:bg-[#00c87a]"
         >
-          NEXT IDEA ›
+          NEXT IDEA
+          <ChevronRight size={24} />
         </button>
       </div>
 
