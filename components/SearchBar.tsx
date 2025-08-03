@@ -6,6 +6,7 @@ interface SearchBarProps {
   placeholder?: string;
   buttonLabel?: string;
   className?: string;
+  onSubmit?: (value: string) => void;
 }
 
 /**
@@ -16,6 +17,7 @@ export default function SearchBar({
   placeholder = "What is an interest or hobby that you enjoy?",
   buttonLabel = "Show me the money",
   className = "",
+  onSubmit,
 }: SearchBarProps) {
   const [value, setValue] = useState("");
   const [focused, setFocused] = useState(false);
@@ -24,7 +26,7 @@ export default function SearchBar({
 
   return (
     <div
-      className={`flex h-[132px] p-[15px] bg-[#00A160] rounded-[15px] gap-2 items-center justify-center mb-3 ${className}`}
+      className={`flex w-full h-[132px] p-[15px] bg-[#00A160] rounded-[15px] gap-2 items-center justify-center mb-3 ${className}`}
     >
       <div className="flex flex-col sm:flex-row gap-3 items-center w-full">
         {/* Input + floating label */}
@@ -51,7 +53,7 @@ export default function SearchBar({
             {placeholder}
           </label>
         </div>
-        <CTAButton label={buttonLabel} />
+        <CTAButton label={buttonLabel} onClick={() => onSubmit?.(value)} />
       </div>
     </div>
   );

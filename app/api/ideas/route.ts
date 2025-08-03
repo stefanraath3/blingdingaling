@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
         {
           role: "system",
           content:
-            "You are a business idea generator that produces concise, useful output strictly following the given schema.",
+            "You are an expert business idea generator that produces concise, useful output strictly following the given schema.",
         },
         {
           role: "user",
