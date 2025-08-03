@@ -54,7 +54,7 @@ export default function Results({
 
   return (
     <div
-      className={`flex flex-col items-center text-center gap-8 ${className}`}
+      className={`flex flex-col items-center text-center gap-8 pb-8 ${className}`}
     >
       {/* Prompt */}
       <h2 className="text-white text-2xl sm:text-3xl font-bold">"{prompt}"</h2>

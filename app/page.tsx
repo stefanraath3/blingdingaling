@@ -82,7 +82,11 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <main className="flex-1 flex items-center justify-center px-8">
+      <main
+        className={`flex-1 flex justify-center px-8 ${
+          stage === "result" ? "items-start pt-8 pb-16" : "items-center"
+        }`}
+      >
         <div className="w-full max-w-6xl relative flex flex-col items-center min-h-[260px]">
           <AnimatePresence
             mode="wait"
