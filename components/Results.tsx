@@ -52,7 +52,7 @@ export default function Results({
 
       {/* Idea Card */}
       <div
-        className="w-full max-w-[1060.183px] flex flex-col items-start gap-[48px] rounded-[6px] border border-[#00D37E]"
+        className="w-full max-w-[1060.183px] flex flex-col items-start gap-[64px] rounded-[6px] border border-[#00D37E]"
         style={{ padding: "71px 78px 99px 61.817px" }}
       >
         <div className="flex flex-col items-start gap-[17px] w-full">
@@ -67,7 +67,7 @@ export default function Results({
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-[17px] w-full">
+        <div className="flex flex-col items-center gap-[32px] w-full">
           <button className="flex w-[382px] py-[33px] justify-center items-center gap-[10px] rounded-[4px] bg-white text-[#009358] font-bold text-lg hover:bg-white/90">
             <Sparkles size={24} color="#009358" />
             GENERATE GUIDE
@@ -78,16 +78,6 @@ export default function Results({
           </p>
         </div>
       </div>
-
-      {/* Back button */}
-      {onBack && (
-        <button
-          className="mt-8 self-center px-4 py-2 bg-white text-[#009358] font-semibold rounded hover:bg-white/90"
-          onClick={onBack}
-        >
-          Back
-        </button>
-      )}
     </div>
   );
 }
