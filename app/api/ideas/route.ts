@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
               },
               description: {
                 type: "string",
-                description: "One-sentence explanation of the idea",
+                description: "One or two-sentence explanation of the idea",
               },
             },
             required: ["title", "description"],
@@ -73,7 +73,7 @@ export async function POST(req: NextRequest) {
         },
         {
           role: "user",
-          content: `Generate exactly 12 monetisation ideas for the hobby: \"${prompt.trim()}\"`,
+          content: `Generate exactly 12 monetisation ideas for the hobby: \"${prompt.trim()}\". Each idea must include a concise 3-4 word title and a two-sentence description.`,
         },
       ],
       text: {

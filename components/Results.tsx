@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Sparkles } from "lucide-react";
 
 interface Idea {
   title: string;
@@ -68,9 +69,10 @@ export default function Results({
 
         <div className="flex flex-col items-center gap-[17px] w-full">
           <button className="flex w-[382px] py-[33px] justify-center items-center gap-[10px] rounded-[4px] bg-white text-[#009358] font-bold text-lg hover:bg-white/90">
-            ✨ GENERATE GUIDE
+            <Sparkles size={24} color="#009358" />
+            GENERATE GUIDE
           </button>
-          <p className="text-white/70 text-sm text-center max-w-xl">
+          <p className="text-white/70 text-sm text-center max-w-[382px]">
             This will provide you with every bling-worthy step required to pull
             this off.
           </p>
