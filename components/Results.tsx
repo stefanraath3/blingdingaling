@@ -9,6 +9,16 @@ interface Idea {
   description: string;
 }
 
+interface GuideData {
+  earningsPotential: string;
+  competitiveScore: string;
+  steps: Array<{
+    stepNumber: number;
+    title: string;
+    description: string;
+  }>;
+}
+
 interface ResultsProps {
   prompt: string;
   ideas: Idea[];
@@ -23,6 +33,9 @@ export default function Results({
   className = "",
 }: ResultsProps) {
   const [[index, dir], setPage] = useState<[number, number]>([0, 0]);
+  const [guideData, setGuideData] = useState<GuideData | null>(null);
+  const [isLoadingGuide, setIsLoadingGuide] = useState(false);
+  const [showAllSteps, setShowAllSteps] = useState(false);
   const idea = ideas[index];
 
   const paginate = (direction: number) =>
@@ -31,8 +44,43 @@ export default function Results({
       direction,
     ]);
 
-  const prev = () => paginate(-1);
-  const next = () => paginate(1);
+  const prev = () => {
+    paginate(-1);
+    setGuideData(null); // Reset guide when changing ideas
+    setShowAllSteps(false);
+  };
+  const next = () => {
+    paginate(1);
+    setGuideData(null); // Reset guide when changing ideas
+    setShowAllSteps(false);
+  };
+
+  const handleGenerateGuide = async () => {
+    if (isLoadingGuide) return;
+
+    setIsLoadingGuide(true);
+    try {
+      const response = await fetch("/api/guide", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          idea: idea.title,
+          description: idea.description,
+          originalPrompt: prompt,
+        }),
+      });
+
+      if (!response.ok) throw new Error("Failed to generate guide");
+
+      const data = await response.json();
+      setGuideData(data);
+    } catch (error) {
+      console.error("Error generating guide:", error);
+      // TODO: Add error handling UI
+    } finally {
+      setIsLoadingGuide(false);
+    }
+  };
 
   const variants = {
     enter: (d: number) => ({
@@ -108,15 +156,78 @@ export default function Results({
           </div>
 
           <div className="flex flex-col items-center gap-[32px] w-full">
-            <button className="flex w-[382px] py-[33px] justify-center items-center gap-[10px] rounded-[4px] bg-white text-[#009358] font-bold text-lg hover:bg-white/90">
+            <button
+              onClick={handleGenerateGuide}
+              disabled={isLoadingGuide}
+              className="flex w-[382px] py-[33px] justify-center items-center gap-[10px] rounded-[4px] bg-white text-[#009358] font-bold text-lg hover:bg-white/90 cursor-pointer disabled:cursor-not-allowed disabled:opacity-70"
+            >
               <Sparkles size={24} color="#009358" />
-              GENERATE GUIDE
+              {isLoadingGuide ? "GENERATING..." : "GENERATE GUIDE"}
             </button>
             <p className="text-white/70 text-sm text-center max-w-[382px]">
               This will provide you with every bling-worthy step required to
               pull this off.
             </p>
           </div>
+
+          {/* Guide Section */}
+          {guideData && (
+            <div className="flex flex-col gap-8 w-full mt-8">
+              {/* Earnings and Competitive Score Row */}
+              <div className="flex justify-between items-start">
+                <div className="flex flex-col">
+                  <span className="text-white/70 text-sm uppercase tracking-wide">
+                    EARNINGS POTENTIAL
+                  </span>
+                  <span className="text-white text-2xl font-bold">
+                    {guideData.earningsPotential}
+                  </span>
+                  <span className="text-white/70 text-sm">PER MONTH</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-white/70 text-sm uppercase tracking-wide">
+                    COMPETITIVE SCORE
+                  </span>
+                  <span className="text-white text-2xl font-bold">
+                    {guideData.competitiveScore}
+                  </span>
+                </div>
+              </div>
+
+              {/* Steps Section */}
+              <div className="flex flex-col gap-4 w-full">
+                {guideData.steps
+                  .slice(0, showAllSteps ? guideData.steps.length : 3)
+                  .map((step, idx) => (
+                    <div
+                      key={idx}
+                      className="flex flex-col gap-2 p-4 border border-[#00D37E]/30 rounded-[4px]"
+                    >
+                      <div className="flex items-center gap-2">
+                        <span className="flex items-center justify-center px-2 py-1 bg-[#00D37E] text-[#006E42] text-xs font-bold rounded">
+                          STEP {step.stepNumber}
+                        </span>
+                        <h4 className="text-white text-lg font-semibold">
+                          {step.title}
+                        </h4>
+                      </div>
+                      <p className="text-white/80 text-sm">
+                        {step.description}
+                      </p>
+                    </div>
+                  ))}
+
+                {!showAllSteps && guideData.steps.length > 3 && (
+                  <button
+                    onClick={() => setShowAllSteps(true)}
+                    className="flex items-center justify-center gap-2 py-3 text-[#00D37E] hover:text-[#00c87a] cursor-pointer"
+                  >
+                    <span>Show all {guideData.steps.length} steps</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
     </div>
