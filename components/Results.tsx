@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
+import GuideSkeleton from "./GuideSkeleton";
 
 interface Idea {
   title: string;
@@ -171,8 +172,15 @@ export default function Results({
           </div>
 
           {/* Guide Section */}
-          {guideData && (
-            <div className="flex flex-col gap-8 w-full mt-8">
+          {isLoadingGuide && <GuideSkeleton />}
+
+          {guideData && !isLoadingGuide && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="flex flex-col gap-8 w-full mt-8"
+            >
               {/* Earnings and Competitive Score Row */}
               <div className="flex justify-between items-start">
                 <div className="flex flex-col">
@@ -226,7 +234,7 @@ export default function Results({
                   </button>
                 )}
               </div>
-            </div>
+            </motion.div>
           )}
         </motion.div>
       </AnimatePresence>

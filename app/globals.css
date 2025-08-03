@@ -133,3 +133,24 @@
 .animate-scroll {
   animation: scroll 30s linear infinite;
 }
+
+/* Shimmer animation for skeleton loading */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 211, 126, 0.1) 0%,
+    rgba(0, 211, 126, 0.3) 50%,
+    rgba(0, 211, 126, 0.1) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite ease-in-out;
+}
