@@ -36,19 +36,19 @@ export default function Results({
 
   const variants = {
     enter: (d: number) => ({
-      x: d > 0 ? 300 : -300,
-      y: -20,
+      x: d > 0 ? 400 : -400,
+      y: 0,
       opacity: 0,
-      rotate: d > 0 ? 5 : -5,
-      scale: 0.95,
+      rotate: d > 0 ? 8 : -8,
+      scale: 0.9,
     }),
     center: { x: 0, y: 0, opacity: 1, rotate: 0, scale: 1 },
     exit: (d: number) => ({
-      x: d > 0 ? -300 : 300,
-      y: 20,
+      x: d > 0 ? -400 : 400,
+      y: 0,
       opacity: 0,
-      rotate: d > 0 ? -5 : 5,
-      scale: 0.95,
+      rotate: d > 0 ? -8 : 8,
+      scale: 0.9,
     }),
   };
 
@@ -86,7 +86,12 @@ export default function Results({
           initial="enter"
           animate="center"
           exit="exit"
-          transition={{ type: "spring", stiffness: 450, damping: 22 }}
+          transition={{
+            type: "spring",
+            stiffness: 800,
+            damping: 35,
+            mass: 0.8,
+          }}
           className="w-full max-w-[1060.183px] flex flex-col items-start gap-[64px] rounded-[6px] border border-[#00D37E]"
           style={{ padding: "71px 78px 99px 61.817px" }}
         >
