@@ -73,11 +73,11 @@ export default function Home() {
 
       {/* Hero Section */}
       <main className="flex-1 flex items-center justify-center px-8">
-        <div className="w-full max-w-6xl flex flex-col items-center gap-8">
+        <div className="w-full max-w-6xl relative flex flex-col items-center min-h-[260px]">
           <AnimatePresence mode="wait">
             {stage === "input" && (
               <motion.div
-                key="input-group"
+                key="input"
                 className="w-full flex flex-col items-center gap-8"
                 initial={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -50, transition: { duration: 0.4 } }}
@@ -90,33 +90,27 @@ export default function Home() {
                 </div>
               </motion.div>
             )}
-          </AnimatePresence>
 
-          {/* Loader */}
-          <AnimatePresence>
             {stage === "loading" && (
               <motion.div
-                key="loader"
+                key="loading"
+                className="absolute inset-0 flex items-center justify-center"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.4 }}
+                exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.4 } }}
               >
                 <Loader />
               </motion.div>
             )}
-          </AnimatePresence>
 
-          {/* Results */}
-          <AnimatePresence>
             {stage === "result" && result && (
               <motion.div
-                key="results"
+                key="result"
+                className="w-full"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
                 transition={{ duration: 0.4 }}
-                className="w-full"
               >
                 <Results
                   title={result.title}
