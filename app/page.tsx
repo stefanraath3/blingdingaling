@@ -9,10 +9,10 @@ export default function Home() {
       style={{ backgroundColor: "#009358" }}
     >
       {/* Header */}
-      <header className="w-full px-8 py-6">
+      <header className="w-full px-8 pt-8 pb-6">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Logo />
-          <nav className="flex items-center space-x-8">
+          <nav className="flex items-center space-x-8 text-lg">
             <a
               href="#"
               className="text-white hover:text-white/80 transition-colors font-medium"
