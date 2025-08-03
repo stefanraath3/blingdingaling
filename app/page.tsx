@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Logo from "../components/Logo";
 import SearchBar from "../components/SearchBar";
 import Loader from "../components/Loader";
@@ -53,24 +54,19 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Logo />
           <nav className="flex items-center space-x-8 text-lg">
-            <a
-              href="#"
-              className="text-white hover:text-white/80 transition-colors font-medium"
-            >
-              Home
-            </a>
-            <a
-              href="#"
-              className="text-white hover:text-white/80 transition-colors font-medium"
-            >
-              FAQ
-            </a>
-            <a
-              href="#"
-              className="text-white hover:text-white/80 transition-colors font-medium"
-            >
-              Login
-            </a>
+            {[
+              { label: "Home", href: "#" },
+              { label: "FAQ", href: "#" },
+              { label: "Login", href: "#" },
+            ].map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="text-white hover:text-white/80 transition-colors font-medium"
+              >
+                {link.label}
+              </a>
+            ))}
           </nav>
         </div>
       </header>
@@ -78,39 +74,78 @@ export default function Home() {
       {/* Hero Section */}
       <main className="flex-1 flex items-center justify-center px-8">
         <div className="w-full max-w-6xl flex flex-col items-center gap-8">
-          {stage === "input" && (
-            <>
-              <SearchBar onSubmit={handleSubmit} />
-              <div className="text-left w-full">
-                <p className="text-white/70 text-md">
-                  "I like reading romance novels"
-                </p>
-              </div>
-            </>
-          )}
+          <AnimatePresence mode="wait">
+            {stage === "input" && (
+              <motion.div
+                key="input-group"
+                className="w-full flex flex-col items-center gap-8"
+                initial={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -50, transition: { duration: 0.4 } }}
+              >
+                <SearchBar onSubmit={handleSubmit} />
+                <div className="text-left w-full">
+                  <p className="text-white/70 text-md">
+                    "I like reading romance novels"
+                  </p>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {stage === "loading" && <Loader />}
+          {/* Loader */}
+          <AnimatePresence>
+            {stage === "loading" && (
+              <motion.div
+                key="loader"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
+              >
+                <Loader />
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          {stage === "result" && result && (
-            <Results
-              title={result.title}
-              description={result.description}
-              ideas={result.ideas}
-              onBack={() => {
-                setStage("input");
-                setResult(null);
-              }}
-            />
-          )}
+          {/* Results */}
+          <AnimatePresence>
+            {stage === "result" && result && (
+              <motion.div
+                key="results"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.4 }}
+                className="w-full"
+              >
+                <Results
+                  title={result.title}
+                  description={result.description}
+                  ideas={result.ideas}
+                  onBack={() => {
+                    setStage("input");
+                    setResult(null);
+                  }}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
 
       {/* Carousel Section */}
-      {stage === "input" && (
-        <section className="w-full py-16 px-8 mt-auto">
-          <PromptCarousel />
-        </section>
-      )}
+      <AnimatePresence>
+        {stage === "input" && (
+          <motion.section
+            key="carousel"
+            className="w-full py-16 px-8 mt-auto"
+            initial={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50, transition: { duration: 0.4 } }}
+          >
+            <PromptCarousel />
+          </motion.section>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

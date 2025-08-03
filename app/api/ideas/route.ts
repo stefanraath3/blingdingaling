@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
     } as const;
 
     const aiRes = await openai.responses.create({
-      model: "gpt-4.1", // Structured Outputs supported
+      model: "gpt-4.1-mini", // Structured Outputs supported
       input: [
         {
           role: "system",
