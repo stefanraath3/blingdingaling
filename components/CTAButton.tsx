@@ -15,7 +15,7 @@ export default function CTAButton({
   return (
     <button
       onClick={onClick}
-      className={`flex w-[286px] px-[21px] py-[33px] bg-white rounded-[6px] items-center justify-center gap-2 shrink-0 hover:bg-white/90 transition-colors ${className}`}
+      className={`cursor-pointer flex w-[286px] px-[21px] py-[33px] bg-white rounded-[6px] items-center justify-center gap-2 shrink-0 hover:bg-white/90 transition-colors ${className}`}
       style={{ color: "#009358" }}
     >
       <DollarIcon size={24} />

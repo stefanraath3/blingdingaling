@@ -10,7 +10,7 @@ export default function Home() {
     >
       {/* Header */}
       <header className="w-full px-8 py-6">
-        <div className="flex items-center justify-between">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Logo />
           <nav className="flex items-center space-x-8">
             <a
