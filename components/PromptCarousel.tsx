@@ -23,7 +23,7 @@ export default function PromptCarousel() {
             className="flex flex-col justify-between items-start w-[280px] h-[229px] p-[21px] border border-[#00D37E] rounded-[6px] shrink-0"
           >
             <p className="text-white text-xl sm:text-2xl font-medium whitespace-normal">
-              "{p.text}"
+              &ldquo;{p.text}&rdquo;
             </p>
             <span className="flex items-center justify-center px-[10px] py-[6px] bg-[#00A160] rounded-[4px] text-white text-xs sm:text-sm font-semibold whitespace-nowrap">
               {p.ideas} BUSINESS IDEAS

@@ -23,7 +23,6 @@ interface GuideData {
 interface ResultsProps {
   prompt: string;
   ideas: Idea[];
-  onBack?: () => void;
   className?: string;
   apiKey?: string;
 }
@@ -31,7 +30,6 @@ interface ResultsProps {
 export default function Results({
   prompt,
   ideas,
-  onBack,
   className = "",
   apiKey,
 }: ResultsProps) {
@@ -111,7 +109,9 @@ export default function Results({
       className={`flex flex-col items-center text-center gap-8 pb-8 ${className}`}
     >
       {/* Prompt */}
-      <h2 className="text-white text-2xl sm:text-3xl font-bold">"{prompt}"</h2>
+      <h2 className="text-white text-2xl sm:text-3xl font-bold">
+        &ldquo;{prompt}&rdquo;
+      </h2>
 
       {/* Navigation */}
       <div className="flex w-full max-w-[1060px] justify-between mb-4">

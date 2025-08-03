@@ -77,10 +77,6 @@ export default function Home() {
     setUserPrompt("");
   }
 
-  function handleClearApiKey() {
-    setApiKey("");
-  }
-
   function handleApiKeySubmit(userApiKey: string) {
     setApiKey(userApiKey);
     setShowApiKeyModal(false);
@@ -143,7 +139,7 @@ export default function Home() {
                 <SearchBar onSubmit={handleSubmit} />
                 <div className="text-left w-full">
                   <p className="text-white/70 text-md">
-                    "I like reading romance novels"
+                    &ldquo;I like reading romance novels&rdquo;
                   </p>
                 </div>
               </motion.div>
@@ -173,7 +169,6 @@ export default function Home() {
                 <Results
                   prompt={userPrompt}
                   ideas={result.ideas}
-                  onBack={handleBack}
                   apiKey={apiKey}
                 />
               </motion.div>

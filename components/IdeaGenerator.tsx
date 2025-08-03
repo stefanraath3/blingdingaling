@@ -50,7 +50,7 @@ export default function IdeaGenerator() {
           <SearchBar onSubmit={handleSubmit} />
           <div className="text-left w-full">
             <p className="text-white/70 text-md">
-              "I like reading romance novels"
+              &ldquo;I like reading romance novels&rdquo;
             </p>
           </div>
         </>
@@ -59,14 +59,7 @@ export default function IdeaGenerator() {
       {stage === "loading" && <Loader />}
 
       {stage === "result" && result && (
-        <Results
-          prompt={prompt}
-          ideas={result.ideas}
-          onBack={() => {
-            setStage("input");
-            setResult(null);
-          }}
-        />
+        <Results prompt={prompt} ideas={result.ideas} />
       )}
 
       {/* Carousel only show in input stage */}

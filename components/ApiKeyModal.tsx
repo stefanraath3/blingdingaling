@@ -96,14 +96,14 @@ export default function ApiKeyModal({
             <form onSubmit={handleSubmit} className="p-6">
               <div className="mb-4">
                 <p className="text-gray-600 text-sm mb-4">
-                  To generate business ideas, you'll need to provide your own
-                  OpenAI API key. This ensures you have full control over your
-                  usage and costs.
+                  To generate business ideas, you&apos;ll need to provide your
+                  own OpenAI API key. This ensures you have full control over
+                  your usage and costs.
                 </p>
 
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mb-4">
                   <p className="text-blue-800 text-xs">
-                    <strong>Don't have an API key?</strong> Get one at{" "}
+                    <strong>Don&apos;t have an API key?</strong> Get one at{" "}
                     <a
                       href="https://platform.openai.com/api-keys"
                       target="_blank"

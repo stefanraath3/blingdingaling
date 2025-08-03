@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  // OPENAI_API_KEY picked up from env
-});
-
 interface Idea {
   title: string;
   description: string;
