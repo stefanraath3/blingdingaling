@@ -36,7 +36,7 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <main className="flex-1 flex items-center justify-center px-8 py-16">
+      <main className="flex-1 flex items-center justify-center px-8">
         <div className="w-full max-w-6xl">
           <SearchBar />
 
@@ -49,7 +49,7 @@ export default function Home() {
       </main>
 
       {/* Carousel Section */}
-      <section className="fixed inset-x-0 bottom-16 px-8">
+      <section className="w-full py-16 px-8 mt-auto">
         <PromptCarousel />
       </section>
     </div>

@@ -16,15 +16,17 @@ export default function SearchBar({
   className = "",
 }: SearchBarProps) {
   return (
-    <div className={`p-4 sm:p-5 bg-[#00A160] rounded-[10px] mb-3 ${className}`}>
-      <div className="flex flex-col sm:flex-row gap-3 items-center">
+    <div
+      className={`flex h-[132px] p-[15px] bg-[#00A160] rounded-[15px] gap-2 items-center justify-center mb-3 ${className}`}
+    >
+      <div className="flex flex-col sm:flex-row gap-3 items-center w-full">
         <input
           type="text"
           placeholder={placeholder}
           className="flex-1 px-6 py-7 sm:py-8 text-lg sm:text-xl text-white placeholder-white/80 bg-transparent border-2 border-white/30 rounded-md focus:outline-none focus:border-white/60"
         />
         <button
-          className="px-10 py-7 sm:py-8 bg-white text-sm sm:text-base font-semibold rounded-md hover:bg-white/90 transition-colors whitespace-nowrap flex items-center gap-2"
+          className="w-[286px] px-[21px] py-[33px] bg-white text-sm sm:text-base font-semibold rounded-[6px] hover:bg-white/90 transition-colors whitespace-nowrap flex items-center gap-2 shrink-0 justify-center"
           style={{ color: "#009358" }}
         >
           <svg
