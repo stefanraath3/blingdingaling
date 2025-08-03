@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Sparkles, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Idea {
@@ -21,11 +22,35 @@ export default function Results({
   onBack,
   className = "",
 }: ResultsProps) {
-  const [index, setIndex] = useState(0);
+  const [[index, dir], setPage] = useState<[number, number]>([0, 0]);
   const idea = ideas[index];
 
-  const prev = () => setIndex((index - 1 + ideas.length) % ideas.length);
-  const next = () => setIndex((index + 1) % ideas.length);
+  const paginate = (direction: number) =>
+    setPage(([i]) => [
+      (i + direction + ideas.length) % ideas.length,
+      direction,
+    ]);
+
+  const prev = () => paginate(-1);
+  const next = () => paginate(1);
+
+  const variants = {
+    enter: (d: number) => ({
+      x: d > 0 ? 300 : -300,
+      y: -20,
+      opacity: 0,
+      rotate: d > 0 ? 5 : -5,
+      scale: 0.95,
+    }),
+    center: { x: 0, y: 0, opacity: 1, rotate: 0, scale: 1 },
+    exit: (d: number) => ({
+      x: d > 0 ? -300 : 300,
+      y: 20,
+      opacity: 0,
+      rotate: d > 0 ? -5 : 5,
+      scale: 0.95,
+    }),
+  };
 
   return (
     <div
@@ -53,33 +78,42 @@ export default function Results({
       </div>
 
       {/* Idea Card */}
-      <div
-        className="w-full max-w-[1060.183px] flex flex-col items-start gap-[64px] rounded-[6px] border border-[#00D37E]"
-        style={{ padding: "71px 78px 99px 61.817px" }}
-      >
-        <div className="flex flex-col items-start gap-[17px] w-full">
-          <span className="flex h-[28px] px-2 justify-center items-center gap-[10px] rounded-[4px] border border-[#00D37E] text-[#00FF98] font-bold text-[18px] leading-[26px]">
-            IDEA {index + 1} OF {ideas.length}
-          </span>
-          <h3 className="text-white text-4xl sm:text-5xl font-bold">
-            {idea.title}
-          </h3>
-          <p className="text-white text-[22px] leading-[33px] font-normal w-full text-left">
-            {idea.description}
-          </p>
-        </div>
+      <AnimatePresence custom={dir} mode="wait" initial={false}>
+        <motion.div
+          key={index}
+          custom={dir}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ type: "spring", stiffness: 450, damping: 22 }}
+          className="w-full max-w-[1060.183px] flex flex-col items-start gap-[64px] rounded-[6px] border border-[#00D37E]"
+          style={{ padding: "71px 78px 99px 61.817px" }}
+        >
+          <div className="flex flex-col items-start gap-[17px] w-full">
+            <span className="flex h-[28px] px-2 justify-center items-center gap-[10px] rounded-[4px] border border-[#00D37E] text-[#00FF98] font-bold text-[18px] leading-[26px]">
+              IDEA {index + 1} OF {ideas.length}
+            </span>
+            <h3 className="text-white text-4xl sm:text-5xl font-bold">
+              {idea.title}
+            </h3>
+            <p className="text-white text-[22px] leading-[33px] font-normal w-full text-left">
+              {idea.description}
+            </p>
+          </div>
 
-        <div className="flex flex-col items-center gap-[32px] w-full">
-          <button className="flex w-[382px] py-[33px] justify-center items-center gap-[10px] rounded-[4px] bg-white text-[#009358] font-bold text-lg hover:bg-white/90">
-            <Sparkles size={24} color="#009358" />
-            GENERATE GUIDE
-          </button>
-          <p className="text-white/70 text-sm text-center max-w-[382px]">
-            This will provide you with every bling-worthy step required to pull
-            this off.
-          </p>
-        </div>
-      </div>
+          <div className="flex flex-col items-center gap-[32px] w-full">
+            <button className="flex w-[382px] py-[33px] justify-center items-center gap-[10px] rounded-[4px] bg-white text-[#009358] font-bold text-lg hover:bg-white/90">
+              <Sparkles size={24} color="#009358" />
+              GENERATE GUIDE
+            </button>
+            <p className="text-white/70 text-sm text-center max-w-[382px]">
+              This will provide you with every bling-worthy step required to
+              pull this off.
+            </p>
+          </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
