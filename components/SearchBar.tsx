@@ -23,7 +23,7 @@ export default function SearchBar({
         <input
           type="text"
           placeholder={placeholder}
-          className="flex-1 px-6 py-7 sm:py-8 text-lg sm:text-xl text-white placeholder-white/80 bg-transparent border-2 border-white/30 rounded-md focus:outline-none focus:border-white/60"
+          className="flex-1 px-[21px] py-[33px] text-[26px] leading-[20px] font-semibold text-white placeholder-white/80 bg-[#00A160] border border-[#00D37E] rounded-[6px] focus:outline-none focus:border-white/60"
         />
         <button
           className="w-[286px] px-[21px] py-[33px] bg-white text-sm sm:text-base font-semibold rounded-[6px] hover:bg-white/90 transition-colors whitespace-nowrap flex items-center gap-2 shrink-0 justify-center"
