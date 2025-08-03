@@ -25,6 +25,7 @@ interface ResultsProps {
   ideas: Idea[];
   onBack?: () => void;
   className?: string;
+  apiKey?: string;
 }
 
 export default function Results({
@@ -32,6 +33,7 @@ export default function Results({
   ideas,
   onBack,
   className = "",
+  apiKey,
 }: ResultsProps) {
   const [[index, dir], setPage] = useState<[number, number]>([0, 0]);
   const [guideData, setGuideData] = useState<GuideData | null>(null);
@@ -57,13 +59,16 @@ export default function Results({
   };
 
   const handleGenerateGuide = async () => {
-    if (isLoadingGuide) return;
+    if (isLoadingGuide || !apiKey) return;
 
     setIsLoadingGuide(true);
     try {
       const response = await fetch("/api/guide", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-OpenAI-Key": apiKey,
+        },
         body: JSON.stringify({
           idea: idea.title,
           description: idea.description,

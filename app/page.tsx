@@ -6,6 +6,7 @@ import SearchBar from "../components/SearchBar";
 import Loader from "../components/Loader";
 import Results from "../components/Results";
 import PromptCarousel from "../components/PromptCarousel";
+import ApiKeyModal from "../components/ApiKeyModal";
 
 interface Idea {
   title: string;
@@ -24,10 +25,25 @@ export default function Home() {
   const [result, setResult] = useState<ApiResponse | null>(null);
   const [userPrompt, setUserPrompt] = useState("");
   const [showCarousel, setShowCarousel] = useState(true);
+  const [apiKey, setApiKey] = useState<string>("");
+  const [showApiKeyModal, setShowApiKeyModal] = useState(false);
+  const [pendingPrompt, setPendingPrompt] = useState<string>("");
   const nextStage = useRef<Stage>(stage);
 
   async function handleSubmit(prompt: string) {
     if (!prompt.trim()) return;
+
+    // Check if we have an API key
+    if (!apiKey) {
+      setPendingPrompt(prompt);
+      setShowApiKeyModal(true);
+      return;
+    }
+
+    await generateIdeas(prompt, apiKey);
+  }
+
+  async function generateIdeas(prompt: string, userApiKey: string) {
     setShowCarousel(false); // hide immediately
     setUserPrompt(prompt);
     nextStage.current = "loading";
@@ -35,7 +51,10 @@ export default function Home() {
     try {
       const res = await fetch("/api/ideas", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-OpenAI-Key": userApiKey,
+        },
         body: JSON.stringify({ prompt }),
       });
       const data = (await res.json()) as ApiResponse;
@@ -56,6 +75,25 @@ export default function Home() {
     nextStage.current = "input";
     setStage("input");
     setUserPrompt("");
+  }
+
+  function handleClearApiKey() {
+    setApiKey("");
+  }
+
+  function handleApiKeySubmit(userApiKey: string) {
+    setApiKey(userApiKey);
+    setShowApiKeyModal(false);
+    if (pendingPrompt) {
+      generateIdeas(pendingPrompt, userApiKey);
+      setPendingPrompt("");
+    }
+  }
+
+  function handleApiKeyCancel() {
+    setShowApiKeyModal(false);
+    setPendingPrompt("");
+    setShowCarousel(true); // Show carousel again since we're staying on input stage
   }
 
   return (
@@ -136,6 +174,7 @@ export default function Home() {
                   prompt={userPrompt}
                   ideas={result.ideas}
                   onBack={handleBack}
+                  apiKey={apiKey}
                 />
               </motion.div>
             )}
@@ -157,6 +196,14 @@ export default function Home() {
           </motion.section>
         )}
       </AnimatePresence>
+
+      {/* API Key Modal */}
+      <ApiKeyModal
+        isOpen={showApiKeyModal}
+        onClose={handleApiKeyCancel}
+        onSubmit={handleApiKeySubmit}
+        isLoading={stage === "loading"}
+      />
     </div>
   );
 }

@@ -25,6 +25,8 @@ export async function POST(req: NextRequest) {
       originalPrompt?: string;
     };
 
+    const apiKey = req.headers.get("X-OpenAI-Key");
+
     if (!idea || !description) {
       return NextResponse.json(
         { error: "Idea and description are required" },
@@ -32,10 +34,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!process.env.OPENAI_API_KEY) {
+    if (!apiKey || apiKey.trim().length === 0) {
       return NextResponse.json(
-        { error: "Server mis-configuration: missing OPENAI_API_KEY" },
-        { status: 500 }
+        { error: "OpenAI API key is required" },
+        { status: 400 }
+      );
+    }
+
+    // Basic validation of API key format
+    if (!apiKey.startsWith("sk-")) {
+      return NextResponse.json(
+        { error: "Invalid API key format" },
+        { status: 400 }
       );
     }
 
@@ -81,7 +91,12 @@ export async function POST(req: NextRequest) {
       additionalProperties: false,
     } as const;
 
-    const aiRes = await openai.responses.create({
+    // Create OpenAI client with user's API key
+    const userOpenAI = new OpenAI({
+      apiKey: apiKey.trim(),
+    });
+
+    const aiRes = await userOpenAI.responses.create({
       model: "gpt-4.1-mini", // Structured Outputs supported
       input: [
         {
