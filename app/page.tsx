@@ -1,9 +1,13 @@
 import Logo from "../components/Logo";
 import PromptCarousel from "../components/PromptCarousel";
+import SearchBar from "../components/SearchBar";
 
 export default function Home() {
   return (
-    <div className="min-h-screen" style={{ backgroundColor: "#009358" }}>
+    <div
+      className="min-h-screen flex flex-col"
+      style={{ backgroundColor: "#009358" }}
+    >
       {/* Header */}
       <header className="w-full px-8 py-6">
         <div className="flex items-center justify-between">
@@ -34,23 +38,10 @@ export default function Home() {
       {/* Hero Section */}
       <main className="flex-1 flex items-center justify-center px-8 py-16">
         <div className="w-full max-w-6xl">
-          <div className="flex flex-col sm:flex-row gap-4 items-center mb-8">
-            <input
-              type="text"
-              placeholder="What is an interest or hobby that you enjoy?"
-              className="flex-1 px-8 py-6 text-xl text-white placeholder-white/80 bg-transparent border-2 border-white/30 rounded-[15px] focus:outline-none focus:border-white/60"
-            />
-            <button
-              className="px-8 py-6 bg-white text-xl font-semibold rounded-[15px] hover:bg-white/90 transition-colors whitespace-nowrap flex items-center gap-2"
-              style={{ color: "#009358" }}
-            >
-              <span className="text-2xl">💰</span>
-              Show me the money
-            </button>
-          </div>
+          <SearchBar />
 
-          <div className="text-center">
-            <p className="text-white/70 text-lg">
+          <div className="text-left">
+            <p className="text-white/70 text-md">
               "I like reading romance novels"
             </p>
           </div>
@@ -58,7 +49,7 @@ export default function Home() {
       </main>
 
       {/* Carousel Section */}
-      <section className="w-full py-16 px-8">
+      <section className="fixed inset-x-0 bottom-16 px-8">
         <PromptCarousel />
       </section>
     </div>

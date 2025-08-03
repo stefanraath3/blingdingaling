@@ -20,14 +20,14 @@ export default function PromptCarousel() {
         {duplicated.map((p, idx) => (
           <div
             key={idx}
-            className="min-w-[20rem] sm:min-w-[24rem] p-6 border-2 border-white/30 rounded-lg shrink-0"
+            className="flex flex-col justify-between items-start w-[280px] h-[229px] p-[21px] border border-[#00D37E] rounded-[6px] shrink-0"
           >
-            <p className="text-white text-lg mb-4 whitespace-normal">
+            <p className="text-white text-xl sm:text-2xl font-medium whitespace-normal">
               "{p.text}"
             </p>
-            <p className="text-white/70 text-sm font-semibold">
+            <span className="flex items-center justify-center px-[10px] py-[6px] bg-[#00A160] rounded-[4px] text-white text-xs sm:text-sm font-semibold whitespace-nowrap">
               {p.ideas} BUSINESS IDEAS
-            </p>
+            </span>
           </div>
         ))}
       </div>
