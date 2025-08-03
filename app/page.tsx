@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Logo from "../components/Logo";
 import SearchBar from "../components/SearchBar";
@@ -14,13 +14,18 @@ interface ApiResponse {
   error?: string;
 }
 
+type Stage = "input" | "loading" | "result";
+
 export default function Home() {
-  type Stage = "input" | "loading" | "result";
   const [stage, setStage] = useState<Stage>("input");
   const [result, setResult] = useState<ApiResponse | null>(null);
+  const [showCarousel, setShowCarousel] = useState(true);
+  const nextStage = useRef<Stage>(stage);
 
   async function handleSubmit(prompt: string) {
     if (!prompt.trim()) return;
+    setShowCarousel(false); // hide immediately
+    nextStage.current = "loading";
     setStage("loading");
     try {
       const res = await fetch("/api/ideas", {
@@ -31,6 +36,7 @@ export default function Home() {
       const data = (await res.json()) as ApiResponse;
       if (!res.ok) throw new Error(data.error || "API error");
       setResult(data);
+      nextStage.current = "result";
       setStage("result");
     } catch (err) {
       console.error(err);
@@ -40,8 +46,15 @@ export default function Home() {
         ideas: [],
         error: String(err),
       });
+      nextStage.current = "result";
       setStage("result");
     }
+  }
+
+  function handleBack() {
+    setShowCarousel(false); // hide while results exit
+    nextStage.current = "input";
+    setStage("input");
   }
 
   return (
@@ -54,17 +67,13 @@ export default function Home() {
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <Logo />
           <nav className="flex items-center space-x-8 text-lg">
-            {[
-              { label: "Home", href: "#" },
-              { label: "FAQ", href: "#" },
-              { label: "Login", href: "#" },
-            ].map((link) => (
+            {["Home", "FAQ", "Login"].map((l) => (
               <a
-                key={link.label}
-                href={link.href}
+                key={l}
+                href="#"
                 className="text-white hover:text-white/80 transition-colors font-medium"
               >
-                {link.label}
+                {l}
               </a>
             ))}
           </nav>
@@ -74,12 +83,18 @@ export default function Home() {
       {/* Hero Section */}
       <main className="flex-1 flex items-center justify-center px-8">
         <div className="w-full max-w-6xl relative flex flex-col items-center min-h-[260px]">
-          <AnimatePresence mode="wait">
+          <AnimatePresence
+            mode="wait"
+            onExitComplete={() => {
+              if (nextStage.current === "input") setShowCarousel(true);
+            }}
+          >
             {stage === "input" && (
               <motion.div
                 key="input"
                 className="w-full flex flex-col items-center gap-8"
-                initial={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -50, transition: { duration: 0.4 } }}
               >
                 <SearchBar onSubmit={handleSubmit} />
@@ -116,10 +131,7 @@ export default function Home() {
                   title={result.title}
                   description={result.description}
                   ideas={result.ideas}
-                  onBack={() => {
-                    setStage("input");
-                    setResult(null);
-                  }}
+                  onBack={handleBack}
                 />
               </motion.div>
             )}
@@ -127,13 +139,14 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Carousel Section */}
+      {/* Carousel */}
       <AnimatePresence>
-        {stage === "input" && (
+        {showCarousel && (
           <motion.section
             key="carousel"
             className="w-full py-16 px-8 mt-auto"
-            initial={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50, transition: { duration: 0.4 } }}
           >
             <PromptCarousel />
