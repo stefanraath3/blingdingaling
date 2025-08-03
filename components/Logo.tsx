@@ -6,9 +6,9 @@ export default function Logo({ className = "" }: { className?: string }) {
           <span className="text-white text-xs font-bold">S</span>
         </div>
       </div>
-      <span className="text-white font-semibold text-xl">SIDEBLING</span>
+      <span className="text-white font-semibold text-xl">BLINGDINGALING</span>
       <span className="text-white/70 text-sm hidden sm:block">
-        MONETIZE YOUR HOBBIES
+        MONETIZE YOUR DINGALING
       </span>
     </div>
   );

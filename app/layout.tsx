@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SideBling",
-  description: "SideBling",
+  title: "BlingDingaling",
+  description: "BlingDingaling",
 };
 
 export default function RootLayout({
