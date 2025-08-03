@@ -5,10 +5,13 @@ const openai = new OpenAI({
   // OPENAI_API_KEY picked up from env
 });
 
-interface IdeasResponse {
+interface Idea {
   title: string;
   description: string;
-  ideas: string[];
+}
+
+interface IdeasResponse {
+  ideas: Idea[];
 }
 
 export async function POST(req: NextRequest) {
@@ -33,23 +36,30 @@ export async function POST(req: NextRequest) {
     const schema = {
       type: "object",
       properties: {
-        title: {
-          type: "string",
-          description: "Catchy heading summarising the opportunity",
-        },
-        description: {
-          type: "string",
-          description: "One-sentence summary of the opportunity",
-        },
         ideas: {
           type: "array",
-          description: "Monetisation ideas (max 12)",
-          items: { type: "string" },
-          minItems: 1,
+          description:
+            "Exactly 12 monetisation ideas. Each idea is an object with a 3-4 word title and a one-sentence description.",
+          minItems: 12,
           maxItems: 12,
+          items: {
+            type: "object",
+            properties: {
+              title: {
+                type: "string",
+                description: "Concise 3-4 word idea name",
+              },
+              description: {
+                type: "string",
+                description: "One-sentence explanation of the idea",
+              },
+            },
+            required: ["title", "description"],
+            additionalProperties: false,
+          },
         },
       },
-      required: ["title", "description", "ideas"],
+      required: ["ideas"],
       additionalProperties: false,
     } as const;
 
@@ -63,7 +73,7 @@ export async function POST(req: NextRequest) {
         },
         {
           role: "user",
-          content: `Generate a title, one-sentence description, and up to 12 monetisation ideas for the hobby: \"${prompt.trim()}\"`,
+          content: `Generate exactly 12 monetisation ideas for the hobby: \"${prompt.trim()}\"`,
         },
       ],
       text: {

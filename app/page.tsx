@@ -7,10 +7,13 @@ import Loader from "../components/Loader";
 import Results from "../components/Results";
 import PromptCarousel from "../components/PromptCarousel";
 
-interface ApiResponse {
+interface Idea {
   title: string;
   description: string;
-  ideas: string[];
+}
+
+interface ApiResponse {
+  ideas: Idea[];
   error?: string;
 }
 
@@ -19,12 +22,14 @@ type Stage = "input" | "loading" | "result";
 export default function Home() {
   const [stage, setStage] = useState<Stage>("input");
   const [result, setResult] = useState<ApiResponse | null>(null);
+  const [userPrompt, setUserPrompt] = useState("");
   const [showCarousel, setShowCarousel] = useState(true);
   const nextStage = useRef<Stage>(stage);
 
   async function handleSubmit(prompt: string) {
     if (!prompt.trim()) return;
     setShowCarousel(false); // hide immediately
+    setUserPrompt(prompt);
     nextStage.current = "loading";
     setStage("loading");
     try {
@@ -40,12 +45,7 @@ export default function Home() {
       setStage("result");
     } catch (err) {
       console.error(err);
-      setResult({
-        title: "Error",
-        description: "",
-        ideas: [],
-        error: String(err),
-      });
+      setResult({ ideas: [], error: String(err) });
       nextStage.current = "result";
       setStage("result");
     }
@@ -55,6 +55,7 @@ export default function Home() {
     setShowCarousel(false); // hide while results exit
     nextStage.current = "input";
     setStage("input");
+    setUserPrompt("");
   }
 
   return (
@@ -128,8 +129,7 @@ export default function Home() {
                 transition={{ duration: 0.4 }}
               >
                 <Results
-                  title={result.title}
-                  description={result.description}
+                  prompt={userPrompt}
                   ideas={result.ideas}
                   onBack={handleBack}
                 />

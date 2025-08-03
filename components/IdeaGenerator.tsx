@@ -6,10 +6,13 @@ import Loader from "./Loader";
 import Results from "./Results";
 import PromptCarousel from "./PromptCarousel";
 
-interface ApiResponse {
+interface Idea {
   title: string;
   description: string;
-  ideas: string[];
+}
+
+interface ApiResponse {
+  ideas: Idea[];
   error?: string;
 }
 
@@ -17,15 +20,17 @@ export default function IdeaGenerator() {
   type Stage = "input" | "loading" | "result";
   const [stage, setStage] = useState<Stage>("input");
   const [result, setResult] = useState<ApiResponse | null>(null);
+  const [prompt, setPrompt] = useState("");
 
-  async function handleSubmit(prompt: string) {
-    if (!prompt.trim()) return;
+  async function handleSubmit(userPrompt: string) {
+    if (!userPrompt.trim()) return;
+    setPrompt(userPrompt);
     setStage("loading");
     try {
       const res = await fetch("/api/ideas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ prompt: userPrompt }),
       });
       const data = (await res.json()) as ApiResponse;
       if (!res.ok) throw new Error(data.error || "API error");
@@ -33,12 +38,7 @@ export default function IdeaGenerator() {
       setStage("result");
     } catch (err) {
       console.error(err);
-      setResult({
-        title: "Error",
-        description: "",
-        ideas: [],
-        error: String(err),
-      });
+      setResult({ ideas: [], error: String(err) });
       setStage("result");
     }
   }
@@ -60,8 +60,7 @@ export default function IdeaGenerator() {
 
       {stage === "result" && result && (
         <Results
-          title={result.title}
-          description={result.description}
+          prompt={prompt}
           ideas={result.ideas}
           onBack={() => {
             setStage("input");

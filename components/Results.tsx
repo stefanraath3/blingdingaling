@@ -1,16 +1,19 @@
 "use client";
 
-interface ResultsProps {
+interface Idea {
   title: string;
   description: string;
-  ideas: string[];
+}
+
+interface ResultsProps {
+  prompt: string;
+  ideas: Idea[];
   onBack?: () => void;
   className?: string;
 }
 
 export default function Results({
-  title,
-  description,
+  prompt,
   ideas,
   onBack,
   className = "",
@@ -20,12 +23,12 @@ export default function Results({
       className={`flex flex-col items-center text-center gap-6 ${className}`}
     >
       <div className="max-w-3xl w-full flex flex-col gap-4">
-        <h2 className="text-white text-4xl font-bold">{title}</h2>
-        <p className="text-white/80 text-lg">{description}</p>
-        <ul className="text-left list-disc pl-5 space-y-2">
+        <h2 className="text-white text-2xl font-bold">"{prompt}"</h2>
+        <ul className="text-left space-y-6">
           {ideas.map((idea, idx) => (
-            <li key={idx} className="text-white text-lg">
-              {idea}
+            <li key={idx} className="text-white">
+              <h3 className="text-xl font-semibold">{idea.title}</h3>
+              <p className="text-white/80 text-lg">{idea.description}</p>
             </li>
           ))}
         </ul>
