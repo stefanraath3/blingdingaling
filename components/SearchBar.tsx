@@ -1,4 +1,5 @@
 import React from "react";
+import CTAButton from "./CTAButton";
 import DollarIcon from "./DollarIcon";
 
 interface SearchBarProps {
@@ -26,13 +27,7 @@ export default function SearchBar({
           placeholder={placeholder}
           className="flex-1 px-[21px] py-[33px] text-[26px] leading-[20px] font-semibold text-white placeholder-white/80 bg-[#00A160] border border-[#00D37E] rounded-[6px] focus:outline-none focus:border-white/60"
         />
-        <button
-          className="w-[286px] px-[21px] py-[33px] bg-white text-sm sm:text-base font-semibold rounded-[6px] hover:bg-white/90 transition-colors whitespace-nowrap flex items-center gap-2 shrink-0 justify-center"
-          style={{ color: "#009358" }}
-        >
-          <DollarIcon className="shrink-0" />
-          {buttonLabel}
-        </button>
+        <CTAButton label={buttonLabel} />
       </div>
     </div>
   );
